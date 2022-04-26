@@ -1,4 +1,4 @@
-package example.micronaut.entities;
+package example.micronaut.entity;
 
 import io.micronaut.core.annotation.Creator;
 import io.micronaut.core.annotation.Introspected;
