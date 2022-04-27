@@ -7,7 +7,7 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 import javax.validation.constraints.NotBlank;
 
 @Introspected
-@ReflectiveAccess
+@ReflectiveAccess       //annotation fixes codec error in native image
 public class Dessert {
 
     @NonNull
