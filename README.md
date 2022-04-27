@@ -1,25 +1,27 @@
-## Micronaut 3.4.2 Documentation
+## Native Application with MongoDB
 
-- [User Guide](https://docs.micronaut.io/3.4.2/guide/index.html)
-- [API Reference](https://docs.micronaut.io/3.4.2/api/index.html)
-- [Configuration Reference](https://docs.micronaut.io/3.4.2/guide/configurationreference.html)
-- [Micronaut Guides](https://guides.micronaut.io/index.html)
----
+A Micronaut application that is built into a native application using GraalVM. The native application is then built 
+into a Docker image. 
 
-## Feature http-client documentation
-
-- [Micronaut HTTP Client documentation](https://docs.micronaut.io/latest/guide/index.html#httpClient)
-
-
-## Feature mongo-sync documentation
-
-- [Micronaut MongoDB Synchronous Driver documentation](https://micronaut-projects.github.io/micronaut-mongodb/latest/guide/index.html)
-
-- [https://docs.mongodb.com](https://docs.mongodb.com)
-
-
-## Feature testcontainers documentation
-
-- [https://www.testcontainers.org/](https://www.testcontainers.org/)
-
+### Instructions
+1. Create a volume to persist database
+   ```
+    docker volume create <volume-name>
+   ```
+2. Create a network
+   ```
+    docker network create <network-name>
+    ```
+3. Run a named mongoDB database container 
+    ```
+    docker run -d --name <db-container-name> --network <network-name> -v <volume-name>:/data/db -p 27017:27017 mongo
+    ```
+4. Build an image of the native application
+    ```
+   ./mvnw package -Dpackaging=docker-native -Pgraalvm   
+    ```
+5. Run this application as a named Docker container on the created network
+    ```
+    docker run -d --network <network-name> --name <app-container-name> -p 8080:8080 mongomicronaut:latest
+    ```
 
