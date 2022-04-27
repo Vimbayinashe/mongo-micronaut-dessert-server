@@ -33,6 +33,8 @@ public class MongoDbDessertRepository implements DessertRepository {
 
     @Override
     public void save(@NonNull @NotNull @Valid Dessert dessert) {
+        // alternative to @ReflectiveAccess annotation -> create a mapper class that converts 'dessert' object into a
+        // Document object with a key-value pair, new Document("key", "value") ; save document instead of dessert object
         getCollection().insertOne(dessert);
     }
 
