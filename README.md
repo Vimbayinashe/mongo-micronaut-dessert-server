@@ -24,4 +24,5 @@ into a Docker image.
     ```
     docker run -d --network <network-name> --name <app-container-name> -p 8080:8080 mongomicronaut:latest
     ```
-
+______________________________________________________________________________________________________
+[![Java CI with Maven](https://github.com/Vimbayinashe/mongo-micronaut-dessert-server/actions/workflows/maven.yml/badge.svg)](https://github.com/Vimbayinashe/mongo-micronaut-dessert-server/actions/workflows/maven.yml)
