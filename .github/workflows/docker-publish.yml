@@ -1,4 +1,4 @@
-name: Compile, Package Native App & Publish Docker Image
+name: Package & Publish Native App
 
 on:
   push:
@@ -12,7 +12,22 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build-and-publish-image:
+  compile-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+          
+  build-and-publish-executable-and-image:
+    needs: [ compile-and-test ]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -28,9 +43,6 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
           cache: maven
-          
-      - name: Compile and test with Maven
-        run: mvn -B test --file pom.xml
 
       - name: Setup GraalVM environment
         if: success()
@@ -41,7 +53,24 @@ jobs:
       - name: Install GraalVM's native-image extension
         if: success()
         run: gu install native-image   
-
+      
+      - name: Generate Native Image with Maven
+        run: ./mvnw package -Dpackaging=native-image
+      
+      - name: Archive Native Executable
+        uses: actions/upload-artifact@v3
+        with:
+          name:  mongo-micronaut-dessert-server-${{ steps.meta.outputs.tags }}
+          path: target/mongomicronaut
+          
+      - name: Publish Native Executable Image
+        if: success()
+        uses: softprops/action-gh-release@v0.1.14
+        with:
+          files: target/mongomicronaut
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
       - name: Log into registry ${{ env.REGISTRY }}
         uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
         with:
@@ -56,13 +85,12 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       
       - name: Build a docker image
-        if: success()
         run: ./mvnw package -Dpackaging=docker-native -Pgraalvm
 
-      - name: Push Docker image
-        id: build-and-push
-        uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
-        with:
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+      - name: Setup Docker
+        uses: docker-practice/actions-setup-docker@1.0.9
+
+      - name: Rename and Push Docker image
+        run: | 
+          docker tag micronaut:latest ${{ env.REGISTRY }}/${{ github.actor }}/micronaut-dessert-server:latest
+          docker push  ${{ env.REGISTRY }}/${{ github.actor }}/micronaut-dessert-server:latest
