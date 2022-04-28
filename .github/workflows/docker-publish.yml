@@ -30,9 +30,9 @@ jobs:
 
       - name: Setup GraalVM environment
         if: success()
-        uses: DeLaGuardo/setup-graalvm@5.0
+        uses: DeLaGuardo/setup-graalvm@3
         with:
-          graalvm: '21.0.0.2.java11'
+          graalvm: '20.0.0.java11'
 
       - name: Install GraalVM's native-image extension
         if: success()
