@@ -49,25 +49,8 @@ jobs:
 
       - name: Install GraalVM's native-image extension
         if: success()
-        run: gu install native-image   
-      
-      - name: Generate Native Image with Maven
-        run: ./mvnw package -Dpackaging=native-image
-      
-      - name: Archive Native Executable
-        uses: actions/upload-artifact@v3
-        with:
-          name:  mongo-micronaut-dessert-server-${{ steps.meta.outputs.tags }}
-          path: target/mongomicronaut
+        run: gu install native-image  
           
-      - name: Publish Native Executable Image
-        if: success()
-        uses: softprops/action-gh-release@v0.1.14
-        with:
-          files: target/mongomicronaut
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
       - name: Log into registry ${{ env.REGISTRY }}
         uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
         with:
