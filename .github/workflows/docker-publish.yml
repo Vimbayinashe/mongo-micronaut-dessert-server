@@ -32,7 +32,7 @@ jobs:
         if: success()
         uses: DeLaGuardo/setup-graalvm@3
         with:
-          graalvm: '20.0.0.java11'
+          graalvm-version: '20.0.0.java11'
 
       - name: Install GraalVM's native-image extension
         if: success()
