@@ -7,6 +7,10 @@ on:
   release:
     types: [ published ]
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
   build-and-publish-image:
     runs-on: ubuntu-latest
@@ -36,11 +40,7 @@ jobs:
 
       - name: Install GraalVM's native-image extension
         if: success()
-        run: gu install native-image    
-        
-        env:
-          REGISTRY: ghcr.io
-          IMAGE_NAME: ${{ github.repository }}
+        run: gu install native-image   
 
       - name: Log into registry ${{ env.REGISTRY }}
         uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
