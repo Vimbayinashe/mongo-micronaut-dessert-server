@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
 @MicronautTest
 @TestInstance(PER_CLASS)
-public class DessertControllerTest implements TestPropertyProvider {
+public class DessertControllerIT implements TestPropertyProvider {
 
     @Inject
     DessertClient dessertClient;
