@@ -73,4 +73,4 @@ jobs:
       - name: Rename and Push Docker image
         run: | 
           docker tag micronaut:latest ${{ env.REGISTRY }}/${{ github.actor }}/micronaut-dessert-server:latest
-          docker push  ${{ env.REGISTRY }}/${{ github.actor }}/micronaut-dessert-server:latest
+          docker push  ${{ env.REGISTRY }}/${{ github.repository_owner }}/micronaut-dessert-server:latest
