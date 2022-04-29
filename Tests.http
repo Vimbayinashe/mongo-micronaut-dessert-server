@@ -11,3 +11,14 @@ Content-Type: application/json
 GET http://localhost:8080/desserts
 
 ###
+# curl -d '{"name":"fruit cake"}' -H "Content-Type: application/json" -X POST http://localhost:8080/desserts
+POST http://localhost:8080/desserts
+Content-Type: application/json
+
+{
+  "name": "fruit crumble"
+}
+
+###
+
+
