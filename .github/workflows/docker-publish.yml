@@ -73,4 +73,5 @@ jobs:
       - name: Rename and Push Docker image
         run: | 
           docker tag mongomicronaut:latest ${{ env.REGISTRY }}/${{ secrets.REPOSITORY_NAME }}/mongo-micronaut-dessert-server:latest
+          docker tag mongomicronaut:latest ${{ env.REGISTRY }}/${{ secrets.REPOSITORY_NAME }}/mongo-micronaut-dessert-server:${{ steps.meta.outputs.tags }}
           docker push  ${{ env.REGISTRY }}/${{ secrets.REPOSITORY_NAME }}/mongo-micronaut-dessert-server:latest
