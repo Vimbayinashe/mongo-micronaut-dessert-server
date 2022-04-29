@@ -40,16 +40,6 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
           cache: maven
-
-      - name: Setup GraalVM environment
-        if: success()
-        uses: DeLaGuardo/setup-graalvm@3
-        with:
-          graalvm-version: '20.0.0.java11'
-
-      - name: Install GraalVM's native-image extension
-        if: success()
-        run: gu install native-image  
           
       - name: Log into registry ${{ env.REGISTRY }}
         uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
@@ -67,11 +57,8 @@ jobs:
       - name: Build a docker image
         run: ./mvnw package -Dpackaging=docker-native -Pgraalvm
 
-      - name: Setup Docker
-        uses: docker-practice/actions-setup-docker@1.0.9
-
       - name: Rename and Push Docker image
         run: | 
           docker tag mongomicronaut:latest ${{ env.REGISTRY }}/${{ secrets.REPOSITORY_NAME }}/mongo-micronaut-dessert-server:latest
-          docker tag mongomicronaut:latest ${{ env.REGISTRY }}/${{ secrets.REPOSITORY_NAME }}/mongo-micronaut-dessert-server:${{ steps.meta.outputs.tags }}
+          docker tag mongomicronaut:latest ${{ steps.meta.outputs.tags }}
           docker push --all-tags  ${{ env.REGISTRY }}/${{ secrets.REPOSITORY_NAME }}/mongo-micronaut-dessert-server
