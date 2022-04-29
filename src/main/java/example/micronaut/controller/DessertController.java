@@ -19,20 +19,20 @@ import static io.micronaut.http.HttpStatus.CREATED;
 @Controller("/desserts")
 public class DessertController {
 
-    private final DessertRepository dessertRepository;
+    private final DessertRepository dessertService;
 
 
-    public DessertController(DessertRepository dessertRepository) {
-        this.dessertRepository = dessertRepository;
+    public DessertController(DessertRepository dessertService) {
+        this.dessertService = dessertService;
     }
 
     @Get
     Publisher<Dessert> dessertList() {
-        return dessertRepository.list();
+        return dessertService.list();
     }
 
     @Post
     Mono<HttpStatus> save(@NonNull @NotNull @Valid Dessert dessert) {
-        return dessertRepository.save(dessert).map(added -> added ? CREATED : CONFLICT);
+        return dessertService.save(dessert).map(added -> added ? CREATED : CONFLICT);
     }
 }
