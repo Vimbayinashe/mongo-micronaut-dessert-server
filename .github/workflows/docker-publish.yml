@@ -7,6 +7,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  REPOSITORY: mongo-micronaut-dessert-server
 
 jobs:
   compile-and-test:
@@ -67,10 +68,13 @@ jobs:
       - name: Build a docker image
         run: ./mvnw package -Dpackaging=docker-native -Pgraalvm
 
-      - name: Setup Docker
+#      - name: Setup Docker
+#        uses: docker-practice/actions-setup-docker@1.0.9
+
+      - name: Check Docker Version
         uses: docker-practice/actions-setup-docker@1.0.9
 
       - name: Rename and Push Docker image
         run: | 
-          docker tag micronaut:latest ${{ env.REGISTRY }}/${{ secrets.REPOSITORY_NAME }}/micronaut-dessert-server:latest
-          docker push  ${{ env.REGISTRY }}/${{ secrets.REPOSITORY_NAME }}/micronaut-dessert-server:latest
+          docker tag mongomicronaut:latest ${{ env.REGISTRY }}/${{ secrets.REPOSITORY_NAME }}/{{ env.REPOSITORY }}:latest
+          docker push  ${{ env.REGISTRY }}/${{ secrets.REPOSITORY_NAME }}/{{ env.REPOSITORY }}:latest
