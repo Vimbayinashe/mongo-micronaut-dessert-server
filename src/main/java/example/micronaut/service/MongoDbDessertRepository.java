@@ -1,17 +1,17 @@
 package example.micronaut.service;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoCollection;
+import com.mongodb.reactivestreams.client.MongoClient;
+import com.mongodb.reactivestreams.client.MongoCollection;
 import example.micronaut.configuration.MongoDbConfiguration;
 import example.micronaut.entity.Dessert;
 import example.micronaut.repository.DessertRepository;
 import io.micronaut.core.annotation.NonNull;
 import jakarta.inject.Singleton;
+import org.reactivestreams.Publisher;
+import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 @Singleton
 public class MongoDbDessertRepository implements DessertRepository {
@@ -27,15 +27,15 @@ public class MongoDbDessertRepository implements DessertRepository {
 
     @Override
     @NonNull
-    public List<Dessert> list() {
-        return getCollection().find().into(new ArrayList<>());
+    public Publisher<Dessert> list() {
+        return getCollection().find();
     }
 
     @Override
-    public void save(@NonNull @NotNull @Valid Dessert dessert) {
-        // alternative to @ReflectiveAccess annotation -> create a mapper class that converts 'dessert' object into a
-        // Document object with a key-value pair, new Document("key", "value") ; save document instead of dessert object
-        getCollection().insertOne(dessert);
+    public Mono<Boolean> save(@NonNull @NotNull @Valid Dessert dessert) {
+        return Mono.from(getCollection().insertOne(dessert))
+                .map(insertOneResult -> true)
+                .onErrorReturn(false);
     }
 
     @NonNull

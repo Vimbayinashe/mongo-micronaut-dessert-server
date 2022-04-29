@@ -45,6 +45,9 @@ public class DessertControllerIT implements TestPropertyProvider {
         assertEquals(CREATED, status);
 
         desserts = dessertClient.findAll();
+        assertTrue(desserts.stream().anyMatch(dessert -> "meringue, fruit & ice-cream".equals(dessert.getDescription())));
+
+        desserts = dessertClient.findAll();
         assertEquals(2, desserts.size());
     }
 

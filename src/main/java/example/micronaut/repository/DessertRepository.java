@@ -2,15 +2,16 @@ package example.micronaut.repository;
 
 import example.micronaut.entity.Dessert;
 import io.micronaut.core.annotation.NonNull;
+import org.reactivestreams.Publisher;
+import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 public interface DessertRepository {
 
     @NonNull
-    List<Dessert> list();
+    Publisher<Dessert> list();
 
-    void save(@NonNull @NotNull @Valid Dessert dessert);
+    Mono<Boolean> save(@NonNull @NotNull @Valid Dessert dessert);
 }
