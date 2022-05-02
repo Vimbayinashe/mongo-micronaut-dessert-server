@@ -1,6 +1,8 @@
 name: Package & Publish Native App
 
 on:
+  push:
+    branches: [ main ]
   release:
     types: [ published ]
 
@@ -60,7 +62,8 @@ jobs:
       - name: Rename and Push Docker image
         run: | 
           docker tag mongomicronaut:latest ${{ env.REGISTRY }}/${{ secrets.REPOSITORY_NAME }}/mongo-micronaut-dessert-server:latest
-          docker tag mongomicronaut:latest ${{ steps.meta.outputs.tags }}
-          docker image push ${{ env.REGISTRY }}/${{ secrets.REPOSITORY_NAME }}/mongo-micronaut-dessert-server:latest
           docker image ls
+          docker tag mongomicronaut:latest ${{ steps.meta.outputs.tags }}
+          docker image ls
+          docker image push ${{ env.REGISTRY }}/${{ secrets.REPOSITORY_NAME }}/mongo-micronaut-dessert-server:latest
           docker image push ${{ steps.meta.outputs.tags }}
