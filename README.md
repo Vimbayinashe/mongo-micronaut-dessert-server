@@ -56,4 +56,3 @@ into a Docker image.
     "description": "Spicy carrot cake and cream cheese frosting"
   }
 ```
-______________________________________________________________________________________________________
