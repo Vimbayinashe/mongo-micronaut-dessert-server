@@ -1,7 +1,6 @@
-## Native Application with MongoDB
+## Micronaut Native Application
 
-A Micronaut application that is built into a native application using GraalVM. The native application is then built 
-into a Docker image. 
+A Micronaut native application with a MongoDB Replica Set that is packaged into a Docker image. 
 
 ### Download an image of the application
    ```
