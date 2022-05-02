@@ -1,11 +1,8 @@
-FROM alpine as build
-COPY ./ /src
-COPY ./ /src
-RUN mvn -f /src/pom.xml clean compile
-
-FROM eclipse-temurin:17-jre-alpine
-COPY --from=build /src /
-COPY ./ /src/.mvn
-RUN chmod +x /src/mvnw \
-     &&  /src/mvnw package -Dpackaging=docker-native -Pgraalvm
+FROM maven:3.8.5-eclipse-temurin-17-alpine
+COPY ./ /app
+RUN mvn -f /app/pom.xml clean package
+ENV MAVEN_CONFIG ""
+RUN chmod +x /app/mvnw
+RUN cd /app \
+  && ./mvnw package -Dpackaging=docker-native -Pgraalvm
 
