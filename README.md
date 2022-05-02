@@ -4,9 +4,9 @@ A Micronaut application that is built into a native application using GraalVM. T
 into a Docker image. 
 
 ### Download an image of the application
-    ```
+   ```
     docker pull ghcr.io/vimbayinashe/mongo-micronaut-dessert-server:latest
-    ```
+   ```
 
 ### Step-by-step Instructions
 1. Create a network
