@@ -6,7 +6,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ env.REGISTRY }}/${{ secrets.REPOSITORY_NAME }}/mongo-micronaut-dessert-server
+  IMAGE_NAME: ghcr.io/${{ secrets.REPOSITORY_NAME }}/mongo-micronaut-dessert-server
   VERSION: ${{ github.event.release.tag_name }}
 
 jobs:
