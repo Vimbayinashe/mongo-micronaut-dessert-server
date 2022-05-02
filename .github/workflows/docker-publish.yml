@@ -6,7 +6,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: ${{ env.REGISTRY }}/${{ secrets.REPOSITORY_NAME }}/mongo-micronaut-dessert-server
+  VERSION: ${{ github.event.release.tag_name }}
 
 jobs:
   compile-and-test:
@@ -47,19 +48,13 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       
       - name: Build a docker image
-        run: docker build . --tag mongomicronaut:latest
+        run: ./mvnw package -Dpackaging=docker-native -Pgraalvm
 
       - name: Rename and Push Docker image
         run: | 
-          docker tag mongomicronaut:latest ${{ env.REGISTRY }}/${{ secrets.REPOSITORY_NAME }}/mongo-micronaut-dessert-server:latest
-          docker image push ${{ env.REGISTRY }}/${{ secrets.REPOSITORY_NAME }}/mongo-micronaut-dessert-server:latest
-          docker tag mongomicronaut:latest ${{ steps.meta.outputs.tags }}
-          docker image push ${{ steps.meta.outputs.tags }}
+          docker tag mongomicronaut:latest ${{ env.IMAGE_NAME }}:latest
+          docker push ${{ env.IMAGE_NAME }}:latest
+          docker tag mongomicronaut:latest ${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+          docker push ${{ env.IMAGE_NAME }}:${{ env.VERSION }}
