@@ -24,7 +24,10 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Compile & Test with Maven
+      - name: Compile with Maven
+        run: mvn -B compile --file pom.xml
+      
+      - name: Test with Maven
         run: mvn -B test --file pom.xml
 
   build-and-publish-executable-and-image:
