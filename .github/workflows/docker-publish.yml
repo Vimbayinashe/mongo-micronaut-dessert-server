@@ -53,7 +53,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Build a docker image
-        run: ./mvnw package -Dpackaging=docker-native -Pgraalvm
+        run: mvn package -Dpackaging=docker-native -Pgraalvm
 
       - name: Rename and Push Docker image
         run: |
