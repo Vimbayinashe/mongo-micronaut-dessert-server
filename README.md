@@ -24,7 +24,7 @@ A Micronaut native application with a MongoDB Replica Set that is packaged into 
 4. Download and run this application as a named Docker container on the created network
     ```
     docker run -d --network <network-name> --name <app-container-name> -p 8080:8080
-    ghcr.io/vimbayinashe/mongomicronaut:latest
+    ghcr.io/vimbayinashe/mongo-micronaut-dessert-server:latest
     ```
 ### Endpoints
 
