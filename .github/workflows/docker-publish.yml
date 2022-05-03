@@ -6,7 +6,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ghcr.io/${{ secrets.REPOSITORY_NAME }}/mongo-micronaut-dessert-server
+  IMAGE_NAME: ghcr.io/vimbayinashe/mongo-micronaut-dessert-server
   VERSION: ${{ github.event.release.tag_name }}
 
 jobs:
@@ -53,8 +53,8 @@ jobs:
         run: ./mvnw package -Dpackaging=docker-native -Pgraalvm
 
       - name: Rename and Push Docker image
-        run: | 
-          docker tag mongomicronaut:latest ${{ env.IMAGE_NAME }}:latest
-          docker push ${{ env.IMAGE_NAME }}:latest
+        run: |
           docker tag mongomicronaut:latest ${{ env.IMAGE_NAME }}:${{ env.VERSION }}
           docker push ${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+          docker tag mongomicronaut:latest ${{ env.IMAGE_NAME }}:latest
+          docker push ${{ env.IMAGE_NAME }}:latest
